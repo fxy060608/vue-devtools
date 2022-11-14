@@ -15,14 +15,17 @@ interface GlobalTarget {
 export function getDevtoolsGlobalHook (): any {
   return (getTarget() as any).__VUE_DEVTOOLS_GLOBAL_HOOK__
 }
-
+// fixed by xxxxxx
+declare const my: any
 export function getTarget (): GlobalTarget {
   // @ts-ignore
   return (typeof navigator !== 'undefined' && typeof window !== 'undefined')
     ? window
     : typeof global !== 'undefined'
       ? global
-      : {}
+      : typeof my !== 'undefined'
+        ? my
+        : {}
 }
 
 export const isProxyAvailable = typeof Proxy === 'function'
