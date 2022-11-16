@@ -66,6 +66,7 @@ module.exports = {
         'packages/build-tools/**',
         'packages/shell-electron/**',
         '**webpack.config.js',
+        '**webpack.*.config.js',
       ],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',

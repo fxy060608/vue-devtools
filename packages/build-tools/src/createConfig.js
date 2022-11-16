@@ -109,12 +109,8 @@ exports.createConfig = (config, target = { chrome: 52, firefox: 48 }) => {
       new ESLintPlugin({
         threads: true,
       }),
-      new MonacoEditorPlugin({
-        // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-        languages: ['javascript'],
-      }),
     ],
-    devtool: 'eval-source-map',
+    devtool: false,
     devServer: {
       port: process.env.PORT,
     },
@@ -141,7 +137,7 @@ exports.createConfig = (config, target = { chrome: 52, firefox: 48 }) => {
     baseConfig.optimization = {
       minimizer: [
         new TerserPlugin({
-          exclude: /backend/,
+          // exclude: /backend/,
           terserOptions: {
             compress: {
               // turn off flags with small gains to speed up minification
@@ -182,6 +178,15 @@ exports.createConfig = (config, target = { chrome: 52, firefox: 48 }) => {
         }),
       ],
     }
+  }
+  // fixed by xxxxxx
+  if (config.entry.devtools) {
+    baseConfig.plugins.push(
+      new MonacoEditorPlugin({
+        // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+        languages: ['javascript'],
+      }),
+    )
   }
 
   return mergeWithRules({

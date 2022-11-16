@@ -658,19 +658,20 @@ function connectBridge () {
       settings,
     })
   })
-
-  ctx.bridge.send(BridgeEvents.TO_FRONT_TITLE, { title: document.title })
-  // Watch page title
-  const titleEl = document.querySelector('title')
-  if (titleEl && typeof MutationObserver !== 'undefined') {
-    if (pageTitleObserver) {
-      pageTitleObserver.disconnect()
+  if (__PLATFORM__ === 'web') {
+    ctx.bridge.send(BridgeEvents.TO_FRONT_TITLE, { title: document.title })
+    // Watch page title
+    const titleEl = document.querySelector('title')
+    if (titleEl && typeof MutationObserver !== 'undefined') {
+      if (pageTitleObserver) {
+        pageTitleObserver.disconnect()
+      }
+      pageTitleObserver = new MutationObserver((mutations) => {
+        const title = mutations[0].target as HTMLTitleElement
+        ctx.bridge.send(BridgeEvents.TO_FRONT_TITLE, { title: title.innerText })
+      })
+      pageTitleObserver.observe(titleEl, { subtree: true, characterData: true, childList: true })
     }
-    pageTitleObserver = new MutationObserver((mutations) => {
-      const title = mutations[0].target as HTMLTitleElement
-      ctx.bridge.send(BridgeEvents.TO_FRONT_TITLE, { title: title.innerText })
-    })
-    pageTitleObserver.observe(titleEl, { subtree: true, characterData: true, childList: true })
   }
 }
 

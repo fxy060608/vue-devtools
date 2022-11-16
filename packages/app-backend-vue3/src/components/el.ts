@@ -6,6 +6,9 @@ export function getComponentInstanceFromElement (element) {
 }
 
 export function getRootElementsFromComponentInstance (instance) {
+  if (__PLATFORM__ === 'mp') {
+    return []
+  }
   if (isFragment(instance)) {
     return getFragmentRootElements(instance.subTree)
   }
@@ -37,6 +40,9 @@ function getFragmentRootElements (vnode): any[] {
  * @return {Object}
  */
 export function getInstanceOrVnodeRect (instance) {
+  if (__PLATFORM__ === 'mp') {
+    return
+  }
   const el = instance.subTree.el
 
   if (!isBrowser) {

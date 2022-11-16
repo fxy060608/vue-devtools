@@ -29,7 +29,7 @@ export function isFragment (instance) {
 export function getInstanceName (instance) {
   const name = getComponentTypeName(instance.type || {})
   if (name) return name
-  if (instance.root === instance) return 'Root'
+  if (isAppRoot(instance)) return 'Root'
   for (const key in instance.parent?.type?.components) {
     if (instance.parent.type.components[key] === instance.type) return saveComponentName(instance, key)
   }
@@ -56,12 +56,21 @@ function getComponentTypeName (options) {
 }
 
 /**
+ * fixed by xxxxxx
+ * @param instance
+ * @returns
+ */
+function isAppRoot (instance: any) {
+  return instance.ctx.$mpType === 'app'
+}
+
+/**
  * Returns a devtools unique id for instance.
  * @param {Vue} instance
  */
 export function getUniqueComponentId (instance, ctx: BackendContext) {
   const appId = instance.appContext.app.__VUE_DEVTOOLS_APP_RECORD_ID__
-  const instanceId = instance === instance.root ? 'root' : instance.uid
+  const instanceId = isAppRoot(instance) ? 'root' : instance.uid
   return `${appId}:${instanceId}`
 }
 

@@ -32,10 +32,19 @@ export class ComponentWalker {
     const parents = []
     this.captureId(instance)
     let parent = instance
-    while ((parent = parent.parent)) {
-      this.captureId(parent)
-      parents.push(parent)
+
+    // fixed by xxxxxx 页面实例
+    if (__PLATFORM__ === 'mp' && instance.ctx.$mpType === 'page') {
+      const appRecord = this.ctx.currentAppRecord
+      this.captureId(appRecord.rootInstance)
+      parents.push(appRecord.rootInstance)
+    } else {
+      while ((parent = parent.parent)) {
+        this.captureId(parent)
+        parents.push(parent)
+      }
     }
+
     return parents
   }
 
@@ -54,7 +63,7 @@ export class ComponentWalker {
       // TODO functional components
       const list = this.isKeepAlive(instance)
         ? this.getKeepAliveCachedInstances(instance)
-        : this.getInternalInstanceChildren(instance.subTree)
+        : this.getInternalInstanceChildrenByInstance(instance)
       return this.findQualifiedChildrenFromList(list, depth)
     } else {
       return []
@@ -78,6 +87,22 @@ export class ComponentWalker {
     } else {
       return Array.prototype.concat.apply([], await Promise.all(instances.map(i => this.findQualifiedChildren(i, depth))))
     }
+  }
+
+  /**
+   * fixed by xxxxxx
+   * @param instance
+   * @param suspense
+   * @returns
+   */
+  private getInternalInstanceChildrenByInstance (instance, suspense = null) {
+    if (__PLATFORM__ === 'mp') {
+      if (instance.ctx.$children) {
+        return instance.ctx.$children.map((proxy: any) => proxy.$)
+      }
+      return []
+    }
+    return this.getInternalInstanceChildren(instance.subTree, suspense)
   }
 
   /**
@@ -138,7 +163,7 @@ export class ComponentWalker {
 
     const name = getInstanceName(instance)
 
-    const children = this.getInternalInstanceChildren(instance.subTree)
+    const children = this.getInternalInstanceChildrenByInstance(instance)
       .filter(child => !isBeingDestroyed(child))
 
     const parents = this.getComponentParents(instance) || []

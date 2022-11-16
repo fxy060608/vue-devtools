@@ -1,15 +1,15 @@
 
 import { DevtoolsBackendOptions, DevtoolsBackend, createBackend, BackendContext } from '@vue-devtools/app-backend-api'
 
-import { backend as backendVue1 } from '@vue-devtools/app-backend-vue1'
-import { backend as backendVue2 } from '@vue-devtools/app-backend-vue2'
+// import { backend as backendVue1 } from '@vue-devtools/app-backend-vue1'
+// import { backend as backendVue2 } from '@vue-devtools/app-backend-vue2'
 import { backend as backendVue3 } from '@vue-devtools/app-backend-vue3'
 
 import { handleAddPerformanceTag } from './perf'
-
+// fixed by xxxxxx
 export const availableBackends = [
-  backendVue1,
-  backendVue2,
+  // backendVue1,
+  // backendVue2,
   backendVue3,
 ]
 

@@ -18,6 +18,8 @@
       "chrome",
       "node",
       "webpack-env",
+      // fixed by xxxxxx
+      "@dcloudio/types"
     ],
     "allowJs": true,
     "target": "ES2019",
@@ -33,6 +35,8 @@
   "include": [
     "packages/app-frontend/src/**/*",
     "packages/shared-utils/src/**/*",
+    "packages/shell-hbuilderx/src/**/*",
+    "packages/global.d.ts"
   ],
   "exclude": [
     "node_modules"
