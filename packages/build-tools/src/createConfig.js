@@ -31,6 +31,13 @@ exports.createConfig = (config, target = { chrome: 52, firefox: 48 }) => {
           test: /\.js$/,
           exclude: /node_modules|vue\/dist|vuex\/dist/,
           loader: 'babel-loader',
+          options: {
+            presets: config.output.path.endsWith('devtools')
+              ? [
+                  ['@babel/preset-env', { targets: target }],
+                ]
+              : [],
+          },
         },
         {
           test: /\.ts$/,

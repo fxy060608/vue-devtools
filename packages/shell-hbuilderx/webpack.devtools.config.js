@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 const { createConfig } = require('@vue-devtools/build-tools')
 
 const target = {
