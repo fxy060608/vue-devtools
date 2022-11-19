@@ -9,6 +9,7 @@ const target = {
 }
 
 module.exports = createConfig({
+  devtool: 'source-map',
   entry: {
     devtools: './src/devtools.js',
   },
