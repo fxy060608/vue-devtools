@@ -29,6 +29,7 @@ module.exports = createConfig({
   plugins: [
     new webpack.DefinePlugin({
       __PLATFORM__: JSON.stringify('web'),
+      __global__: 'global',
     }),
   ],
 }, target)

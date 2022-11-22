@@ -17,15 +17,18 @@ export function getDevtoolsGlobalHook (): any {
 }
 // fixed by xxxxxx
 declare const my: any
+declare const __global__:any
 export function getTarget (): GlobalTarget {
   // @ts-ignore
   return (typeof navigator !== 'undefined' && typeof window !== 'undefined')
     ? window
-    : typeof global !== 'undefined'
-      ? global
-      : typeof my !== 'undefined'
-        ? my
-        : {}
+    : typeof globalThis !== 'undefined'
+      ? globalThis
+      : typeof __global__ !== 'undefined'
+        ? __global__
+        : typeof my !== 'undefined'
+          ? my
+          : {}
 }
 
 export const isProxyAvailable = typeof Proxy === 'function'

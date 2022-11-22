@@ -1,13 +1,16 @@
 // fixed by xxxxxx
 declare const my: any
+declare const __global__:any
 export const isBrowser = typeof navigator !== 'undefined'
 export const target: any = isBrowser
   ? window
-  : typeof global !== 'undefined'
-    ? global
-    : typeof my !== 'undefined'
-      ? my
-      : undefined
+  : typeof globalThis !== 'undefined'
+    ? globalThis
+    : typeof __global__ !== 'undefined'
+      ? __global__
+      : typeof my !== 'undefined'
+        ? my
+        : {}
 export const isChrome =
   typeof target.chrome !== 'undefined' && !!target.chrome.devtools
 export const isFirefox =
