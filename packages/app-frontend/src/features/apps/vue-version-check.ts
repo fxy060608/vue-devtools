@@ -1,5 +1,6 @@
 import { ref, onMounted } from 'vue'
 import semver from 'semver'
+import npmVue from './npm_vue.json'
 
 const packageData = ref<any>(null)
 
@@ -7,13 +8,13 @@ export function useVueVersionCheck () {
   onMounted(async () => {
     if (!packageData.value) {
       try {
-        const response = await fetch('https://registry.npmjs.org/vue', {
-          headers: {
-            mode: 'no-cors',
-          },
-        })
-        const data = await response.json()
-        packageData.value = data
+        // const response = await fetch('https://registry.npmjs.org/vue', {
+        //   headers: {
+        //     mode: 'no-cors',
+        //   },
+        // })
+        // const data = await response.json()
+        packageData.value = npmVue
       } catch (e) {
         if (process.env.NODE_ENV !== 'development') {
           console.error(e)
