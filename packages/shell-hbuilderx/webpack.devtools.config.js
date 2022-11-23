@@ -17,6 +17,5 @@ module.exports = createConfig({
     path: path.join(__dirname, '/dist/devtools'),
     publicPath: '/build/',
     filename: '[name].js',
-    globalObject: 'global',
   },
 }, target)
