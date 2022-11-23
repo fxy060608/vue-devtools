@@ -1,7 +1,7 @@
 // fixed by xxxxxx
 declare const my: any
 declare const __global__:any
-export const isBrowser = typeof navigator !== 'undefined'
+export const isBrowser = typeof navigator !== 'undefined' && typeof window !== 'undefined'
 export const target: any = isBrowser
   ? window
   : typeof globalThis !== 'undefined'
@@ -14,7 +14,7 @@ export const target: any = isBrowser
 export const isChrome =
   typeof target.chrome !== 'undefined' && !!target.chrome.devtools
 export const isFirefox =
-  isBrowser && navigator.userAgent.indexOf('Firefox') > -1
+  isBrowser && navigator.userAgent && navigator.userAgent.indexOf('Firefox') > -1
 export const isWindows = isBrowser && navigator.platform.indexOf('Win') === 0
 export const isMac = isBrowser && navigator.platform === 'MacIntel'
 export const isLinux = isBrowser && navigator.platform.indexOf('Linux') === 0
