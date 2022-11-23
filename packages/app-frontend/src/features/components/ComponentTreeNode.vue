@@ -165,6 +165,7 @@ export default defineComponent({
       toggleEl,
       sortedChildren,
       displayName,
+      route: props.instance.route,
       componentHasKey,
       selected,
       select,
@@ -247,7 +248,12 @@ export default defineComponent({
           :class="[
             selected ? 'text-white/60' : 'text-gray-400 dark:text-gray-600',
           ]"
-        >&gt;</span>
+        >&gt;
+        </span>
+        <span
+          v-if="route"
+          class="item-route text-green-500"
+        >{{ route }}</span>
       </span>
 
       <span class="flex items-center space-x-2 ml-2 h-full">

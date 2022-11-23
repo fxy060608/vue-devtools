@@ -35,6 +35,8 @@ button:focus
 
 .selectable-item
   background-color $background-color
+    .item-route
+      font-size 12px
   &:hover
     background-color $hover-color
   &.selected,
@@ -43,7 +45,7 @@ button:focus
     color #fff
     .arrow
       border-left-color #fff
-    .item-name
+    .item-name, .item-route
       color #fff
 
   .vue-ui-dark-mode &

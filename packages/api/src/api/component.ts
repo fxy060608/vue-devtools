@@ -19,6 +19,7 @@ export interface ComponentTreeNode {
   tags: InspectorNodeTag[]
   autoOpen: boolean
   meta?: any
+  route?: string
 }
 
 export interface InspectedComponentData {
