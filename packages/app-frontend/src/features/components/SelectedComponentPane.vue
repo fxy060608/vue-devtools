@@ -103,19 +103,19 @@ export default defineComponent({
         class="search flex-1 flat min-w-0"
       />
 
-      <VueButton
+      <!-- <VueButton
         v-tooltip="'Scroll to component'"
         icon-left="preview"
         class="flat icon-button"
         @click="scrollToComponent()"
-      />
+      /> -->
 
-      <VueButton
+      <!-- <VueButton
         v-tooltip="'Show render code'"
         icon-left="code"
         class="flat icon-button"
         @click="showRenderCode = true"
-      />
+      /> -->
 
       <VueButton
         v-if="$isChrome"
@@ -125,7 +125,7 @@ export default defineComponent({
         @click="inspectDOM()"
       />
 
-      <VueButton
+      <!-- <VueButton
         v-if="fileIsPath"
         v-tooltip="{
           content: $t('ComponentInspector.openInEditor.tooltip', { file: data.file }),
@@ -134,7 +134,7 @@ export default defineComponent({
         icon-left="launch"
         class="flat icon-button"
         @click="openFile()"
-      />
+      /> -->
     </div>
 
     <VueLoadingBar
