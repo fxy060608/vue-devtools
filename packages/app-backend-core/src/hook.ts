@@ -279,7 +279,12 @@ export function installHook (target, isIframe = false) {
       }
     })
   }
-
+  if (__PLATFORM__ === 'app') {
+    // @ts-ignore
+    uni.syncDataToGlobal({
+      __VUE_DEVTOOLS_GLOBAL_HOOK__: hook,
+    })
+  }
   Object.defineProperty(target, '__VUE_DEVTOOLS_GLOBAL_HOOK__', {
     get () {
       return hook
