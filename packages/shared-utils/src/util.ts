@@ -713,7 +713,7 @@ export function openInEditor (file) {
     target.chrome.devtools.inspectedWindow.eval(src)
   } else {
     // eslint-disable-next-line no-eval
-    eval(src)
+    [eval][0](src)
   }
 }
 
