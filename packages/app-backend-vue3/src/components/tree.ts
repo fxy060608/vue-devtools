@@ -96,11 +96,8 @@ export class ComponentWalker {
    * @returns
    */
   private getInternalInstanceChildrenByInstance (instance, suspense = null) {
-    if (__PLATFORM__ === 'mp') {
-      if (instance.ctx.$children) {
-        return instance.ctx.$children.map((proxy: any) => proxy.$)
-      }
-      return []
+    if (instance.ctx.$children) {
+      return instance.ctx.$children.map((proxy: any) => proxy.$)
     }
     return this.getInternalInstanceChildren(instance.subTree, suspense)
   }
