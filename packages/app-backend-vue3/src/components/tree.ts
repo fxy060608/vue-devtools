@@ -109,14 +109,14 @@ export class ComponentWalker {
     const list = []
     if (subTree) {
       if (subTree.component) {
-        this.handleSubTreeComponent(list, subTree, suspense)
+        this.getInstanceChildrenBySubTreeComponent(list, subTree, suspense)
       } else if (subTree.suspense) {
         const suspenseKey = !subTree.suspense.isInFallback ? 'suspense default' : 'suspense fallback'
         list.push(...this.getInternalInstanceChildren(subTree.suspense.activeBranch, { ...subTree.suspense, suspenseKey }))
       } else if (Array.isArray(subTree.children)) {
         subTree.children.forEach(childSubTree => {
           if (childSubTree.component) {
-            this.handleSubTreeComponent(list, childSubTree, suspense)
+            this.getInstanceChildrenBySubTreeComponent(list, childSubTree, suspense)
           } else {
             list.push(...this.getInternalInstanceChildren(childSubTree, suspense))
           }
@@ -127,10 +127,10 @@ export class ComponentWalker {
   }
 
   /**
-   * handle subTree component for uni-app defineSystemComponent
+   * getInternalInstanceChildren by subTree component for uni-app defineSystemComponent
    */
-  private handleSubTreeComponent (list, subTree, suspense) {
-    if (subTree.type && subTree.type.devtools && subTree.type.devtools.hide) {
+  private getInstanceChildrenBySubTreeComponent (list, subTree, suspense) {
+    if (subTree.type.devtools?.hide) {
       list.push(...this.getInternalInstanceChildren(subTree.component.subTree))
     } else {
       !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
