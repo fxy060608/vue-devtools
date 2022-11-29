@@ -69,7 +69,7 @@ export function connectApp (app, shell) {
     initEnv(Vue)
 
     bridge.on(BridgeEvents.TO_FRONT_TITLE, ({ title }: { title: string }) => {
-      document.title = `${title} - Vue devtools`
+      document.title = `${title} - uni-vue-devtools`
     })
 
     await initSharedData({
