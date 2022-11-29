@@ -188,6 +188,18 @@ export class ComponentWalker {
       autoOpen: this.recursively,
     }
 
+    if (__PLATFORM__ === 'mp' && instance.ctx.mpType === 'page') {
+      treeNode.route = instance.ctx.$scope.is || instance.ctx.$scope.$page?.fullPath
+    }
+
+    if (__PLATFORM__ === 'app') {
+      treeNode.route = instance.attrs.__pagePath || ''
+    }
+
+    if (__PLATFORM__ === 'web') {
+      treeNode.route = instance.ctx.route || ''
+    }
+
     // capture children
     if (depth < this.maxDepth || instance.type.__isKeepAlive || parents.some(parent => parent.type.__isKeepAlive)) {
       treeNode.children = await Promise.all(children
