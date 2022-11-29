@@ -109,14 +109,14 @@ export class ComponentWalker {
     const list = []
     if (subTree) {
       if (subTree.component) {
-        !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
+        this.handleSubTreeComponent(list, subTree, suspense)
       } else if (subTree.suspense) {
         const suspenseKey = !subTree.suspense.isInFallback ? 'suspense default' : 'suspense fallback'
         list.push(...this.getInternalInstanceChildren(subTree.suspense.activeBranch, { ...subTree.suspense, suspenseKey }))
       } else if (Array.isArray(subTree.children)) {
         subTree.children.forEach(childSubTree => {
           if (childSubTree.component) {
-            !suspense ? list.push(childSubTree.component) : list.push({ ...childSubTree.component, suspense })
+            this.handleSubTreeComponent(list, childSubTree, suspense)
           } else {
             list.push(...this.getInternalInstanceChildren(childSubTree, suspense))
           }
@@ -124,6 +124,17 @@ export class ComponentWalker {
       }
     }
     return list.filter(child => !isBeingDestroyed(child) && !child.type.devtools?.hide)
+  }
+
+  /**
+   * handle subTree component for uni-app defineSystemComponent
+   */
+  private handleSubTreeComponent (list, subTree, suspense) {
+    if (subTree.type && subTree.type.devtools && subTree.type.devtools.hide) {
+      list.push(...this.getInternalInstanceChildren(subTree.component.subTree))
+    } else {
+      !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
+    }
   }
 
   private captureId (instance): string {
