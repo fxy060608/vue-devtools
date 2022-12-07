@@ -117,8 +117,7 @@ async function connect () {
   })
 
   // Components
-
-  const sendComponentUpdate = throttle(async (appRecord: AppRecord, id: string) => {
+  const _sendComponentUpdate = async (appRecord: AppRecord, id: string) => {
     try {
       // Update component inspector
       if (id && isSubscribed(BridgeSubscriptions.SELECTED_COMPONENT_DATA, sub => sub.payload.instanceId === id)) {
@@ -134,7 +133,8 @@ async function connect () {
         console.error(e)
       }
     }
-  }, 100)
+  }
+  const sendComponentUpdate = __PLATFORM__ === 'mp' ? _sendComponentUpdate : throttle(_sendComponentUpdate, 100)
 
   hook.on(HookEvents.COMPONENT_UPDATED, async (app, uid, parentUid, component) => {
     try {
