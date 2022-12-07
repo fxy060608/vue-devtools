@@ -179,6 +179,11 @@ async function connect () {
         }
       }
 
+      if (__PLATFORM__ === 'app' && uid !== 0 && parentUid === undefined) {
+        const parentId = `${id.split(':')[0]}:root`
+        sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
+      }
+
       if (parentUid != null) {
         const parentInstances = await appRecord.backend.api.walkComponentParents(component)
         if (parentInstances.length) {
@@ -222,6 +227,13 @@ async function connect () {
     try {
       if (!app || (typeof uid !== 'number' && !uid) || !component) return
       const appRecord = await getAppRecord(app, ctx)
+
+      if (__PLATFORM__ === 'app' && uid !== 0 && parentUid === undefined) {
+        const id = await getComponentId(app, uid, component, ctx)
+        const parentId = `${id.split(':')[0]}:root`
+        sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
+      }
+
       if (parentUid != null) {
         const parentInstances = await appRecord.backend.api.walkComponentParents(component)
         if (parentInstances.length) {
