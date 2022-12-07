@@ -13,6 +13,7 @@ export class ComponentWalker {
   // Dedupe instances
   // Some instances may be both on a component and on a child abstract/functional component
   captureIds: Map<string, undefined>
+  uniAppPageNames: string[]
 
   constructor (maxDepth: number, filter: string, recursively: boolean, api: DevtoolsApi, ctx: BackendContext) {
     this.ctx = ctx
@@ -20,6 +21,7 @@ export class ComponentWalker {
     this.maxDepth = maxDepth
     this.recursively = recursively
     this.componentFilter = new ComponentFilter(filter)
+    this.uniAppPageNames = ['Page', 'KeepAlive', 'AsyncComponentWrapper', 'BaseTransition', 'Transition']
   }
 
   getComponentTree (instance: any): Promise<ComponentTreeNode[]> {
@@ -96,7 +98,7 @@ export class ComponentWalker {
    * @returns
    */
   private getInternalInstanceChildrenByInstance (instance, suspense = null) {
-    if (instance.ctx.$children) {
+    if (__PLATFORM__ !== 'web' && instance.ctx.$children) {
       return instance.ctx.$children.map((proxy: any) => proxy.$)
     }
     return this.getInternalInstanceChildren(instance.subTree, suspense)
@@ -130,7 +132,7 @@ export class ComponentWalker {
    * getInternalInstanceChildren by subTree component for uni-app defineSystemComponent
    */
   private getInstanceChildrenBySubTreeComponent (list, subTree, suspense) {
-    if (subTree.type.devtools?.hide) {
+    if (subTree.type.devtools?.hide || (typeof subTree.key === 'string' && subTree.key.startsWith('/pages')) || this.uniAppPageNames.includes(subTree.type.name)) {
       list.push(...this.getInternalInstanceChildren(subTree.component.subTree))
     } else {
       !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
@@ -170,6 +172,14 @@ export class ComponentWalker {
     const id = this.captureId(instance)
 
     const name = getInstanceName(instance)
+    // 暂时处理web端页面跳转组件树更新问题
+    if (__PLATFORM__ === 'web') {
+      await new Promise<void>(resolve => {
+        setTimeout(() => {
+          resolve()
+        }, 100)
+      })
+    }
 
     const children = this.getInternalInstanceChildrenByInstance(instance)
       .filter(child => !isBeingDestroyed(child))
@@ -205,10 +215,6 @@ export class ComponentWalker {
 
     if (__PLATFORM__ === 'app') {
       treeNode.route = instance.attrs.__pagePath || ''
-    }
-
-    if (__PLATFORM__ === 'web') {
-      treeNode.route = instance.ctx.route || ''
     }
 
     // capture children
