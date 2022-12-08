@@ -172,14 +172,6 @@ export class ComponentWalker {
     const id = this.captureId(instance)
 
     const name = getInstanceName(instance)
-    // 暂时处理web端页面跳转组件树更新问题
-    if (__PLATFORM__ === 'web') {
-      await new Promise<void>(resolve => {
-        setTimeout(() => {
-          resolve()
-        }, 100)
-      })
-    }
 
     const children = this.getInternalInstanceChildrenByInstance(instance)
       .filter(child => !isBeingDestroyed(child))

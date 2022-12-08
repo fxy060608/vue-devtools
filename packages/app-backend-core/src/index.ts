@@ -134,7 +134,7 @@ async function connect () {
       }
     }
   }
-  const sendComponentUpdate = __PLATFORM__ === 'mp' ? _sendComponentUpdate : throttle(_sendComponentUpdate, 100)
+  const sendComponentUpdate = __PLATFORM__ === 'app' ? throttle(_sendComponentUpdate, 100) : _sendComponentUpdate
 
   hook.on(HookEvents.COMPONENT_UPDATED, async (app, uid, parentUid, component) => {
     try {
@@ -180,6 +180,10 @@ async function connect () {
       }
 
       if (__PLATFORM__ === 'app' && uid !== 0 && parentUid === undefined) {
+        const parentId = `${id.split(':')[0]}:root`
+        sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
+      }
+      if (__PLATFORM__ === 'web' && uid !== 0) {
         const parentId = `${id.split(':')[0]}:root`
         sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
       }
