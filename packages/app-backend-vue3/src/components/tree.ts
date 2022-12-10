@@ -98,7 +98,7 @@ export class ComponentWalker {
    * @returns
    */
   private getInternalInstanceChildrenByInstance (instance, suspense = null) {
-    if (__PLATFORM__ !== 'web' && instance.ctx.$children) {
+    if (instance.ctx.$children) {
       return instance.ctx.$children.map((proxy: any) => proxy.$)
     }
     return this.getInternalInstanceChildren(instance.subTree, suspense)
@@ -132,7 +132,7 @@ export class ComponentWalker {
    * getInternalInstanceChildren by subTree component for uni-app defineSystemComponent
    */
   private getInstanceChildrenBySubTreeComponent (list, subTree, suspense) {
-    if (subTree.type.devtools?.hide || (typeof subTree.key === 'string' && subTree.key.startsWith('/pages')) || this.uniAppPageNames.includes(subTree.type.name)) {
+    if (subTree.type.devtools?.hide || this.uniAppPageNames.includes(subTree.type.name)) {
       list.push(...this.getInternalInstanceChildren(subTree.component.subTree))
     } else {
       !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
@@ -207,6 +207,10 @@ export class ComponentWalker {
 
     if (__PLATFORM__ === 'app') {
       treeNode.route = instance.attrs.__pagePath || ''
+    }
+
+    if (__PLATFORM__ === 'web') {
+      treeNode.route = instance.ctx.route || ''
     }
 
     // capture children
