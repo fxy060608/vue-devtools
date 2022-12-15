@@ -143,7 +143,14 @@ export default defineComponent({
       class="primary ghost"
     />
 
+    <div
+      v-if="data.isSetup"
+      style="padding:10px 0 0 10px;font-size:14px"
+    >
+      暂不支持 script setup 语法糖
+    </div>
     <StateInspector
+      v-else
       ref="inspector"
       :state="state"
       class="flex-1 overflow-y-auto"

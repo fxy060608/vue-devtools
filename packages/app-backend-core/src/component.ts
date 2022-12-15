@@ -68,9 +68,14 @@ export async function sendSelectedComponentData (appRecord: AppRecord, instanceI
     const parentInstances = await appRecord.backend.api.walkComponentParents(instance)
     const payload = {
       instanceId,
-      data: stringify(await appRecord.backend.api.inspectComponent(instance, ctx.currentAppRecord.options.app)),
+      data: await appRecord.backend.api.inspectComponent(instance, ctx.currentAppRecord.options.app),
       parentIds: parentInstances.map(i => i.__VUE_DEVTOOLS_UID__),
     }
+    if (__PLATFORM__ !== 'web') {
+      // 小程序及App端暂不支持 script setup 语法糖，增加提示
+      payload.data.isSetup = !!instance.type.setup && !instance.type.render
+    }
+    payload.data = stringify(payload.data)
     ctx.bridge.send(BridgeEvents.TO_FRONT_COMPONENT_SELECTED_DATA, payload)
     markSelectedInstance(instanceId, ctx)
   }

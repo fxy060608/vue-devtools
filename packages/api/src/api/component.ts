@@ -26,6 +26,7 @@ export interface InspectedComponentData {
   id: string
   name: string
   file: string
+  isSetup?: boolean
   state: ComponentState[]
   functional?: boolean
 }
