@@ -132,7 +132,7 @@ export class ComponentWalker {
    * getInternalInstanceChildren by subTree component for uni-app defineSystemComponent
    */
   private getInstanceChildrenBySubTreeComponent (list, subTree, suspense) {
-    if (subTree.type.devtools?.hide || this.uniAppPageNames.includes(subTree.type.name)) {
+    if (subTree.type.__reserved || this.uniAppPageNames.includes(subTree.type.name)) {
       list.push(...this.getInternalInstanceChildren(subTree.component.subTree))
     } else {
       !suspense ? list.push(subTree.component) : list.push({ ...subTree.component, suspense })
