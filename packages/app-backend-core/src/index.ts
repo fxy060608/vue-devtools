@@ -183,7 +183,7 @@ async function connect () {
         const parentId = `${id.split(':')[0]}:root`
         sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
       }
-      if (__PLATFORM__ === 'web' && uid !== 0) {
+      if ((__PLATFORM__ === 'web' || __PLATFORM__ === 'mp') && uid !== 0) {
         const parentId = `${id.split(':')[0]}:root`
         sendComponentTreeData(appRecord, parentId, appRecord.componentFilter, null, false, ctx)
       }
