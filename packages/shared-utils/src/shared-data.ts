@@ -138,19 +138,19 @@ export function initSharedData (params: SharedDataParams): Promise<void> {
     } else {
       if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
-        console.log('[shared data] Minion init in progress...')
+        // console.log('[shared data] Minion init in progress...')
       }
       bridge.on('shared-data:master-init-waiting', () => {
         if (process.env.NODE_ENV !== 'production') {
           // eslint-disable-next-line no-console
-          console.log('[shared data] Minion loading data...')
+          // console.log('[shared data] Minion loading data...')
         }
         // Load all persisted shared data
         bridge.send('shared-data:load')
         bridge.once('shared-data:load-complete', () => {
           if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
-            console.log('[shared data] Minion init complete')
+            // console.log('[shared data] Minion init complete')
           }
           bridge.send('shared-data:init-complete')
           resolve()
